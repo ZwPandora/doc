@@ -39,3 +39,4 @@ springboot 启动会扫描以下位置的application.properties或者application
 + 15.Application properties packaged inside your jar (application.properties and YAML variants).
 + 16.@PropertySource annotations on your @Configuration classes.
 ## 3. 自动配置原理
+1. SpringBoot启动的时候加载主配置类，开启了自动配置功能 ==@EnableAutoConfiguration==

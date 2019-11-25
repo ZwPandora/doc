@@ -24,6 +24,18 @@ public @interface CherryAnnotation {
 + @Import 用于依赖第三方包中bean的配置和加载
 ConfigurationClassParser.doProcessConfigurationClass
 ## 2. 配置文件
+springboot 启动会扫描以下位置的application.properties或者application.yml文件作为Spring boot的默认配置文件
+–file:./config/
+–file:./
+–classpath:/config/
+–classpath:/
 [spring外部配置方式](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)
-+ 4.命令行参数 spring.profiles.active=dev; Dspring.profiles.active=dev
++ 4.命令行参数 --spring.profiles.active=dev; -Dspring.profiles.active=dev
++ 9.Java System properties.
++ 10.OS environment variables.
++ 12.Profile-specific application properties outside of your packaged jar (application-{profile}.properties and YAML variants)
++ 13.Profile-specific application properties packaged inside your jar (application-{profile}.properties and YAML variants)
++ 14.Application properties outside of your packaged jar (application.properties and YAML variants).
++ 15.Application properties packaged inside your jar (application.properties and YAML variants).
++ 16.@PropertySource annotations on your @Configuration classes.
 ## 3. 自动配置原理

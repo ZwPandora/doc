@@ -26,6 +26,6 @@ ConfigurationClassParser.doProcessConfigurationClass
 ## 2. 配置文件
 [spring外部配置方式](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)
 + 1.命令行参数
--- spring.profiles.active=dev
--- -Dspring.profiles.active=dev
+- spring.profiles.active=dev
+- Dspring.profiles.active=dev
 ## 3. 自动配置原理

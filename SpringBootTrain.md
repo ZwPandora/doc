@@ -5,13 +5,13 @@
 + 注解不会对所修饰的代码产生直接的影响。
 
 自定义注解示例
-(```)
+```java
 	public @interface CherryAnnotation {
 		public String name();
 		int age() default 18;
 		int[] array();
 	}
-(```)
+```
 #### 常用的元注解
 元注解：专门修饰注解的注解。
 + @Target

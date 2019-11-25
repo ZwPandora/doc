@@ -6,10 +6,13 @@
 
 自定义注解示例
 ```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {ElementType.METHOD})
+@Documented
 public @interface CherryAnnotation {
-	public String name();
-	int age() default 18;
-	int[] array();
+    String name();
+    int age() default 18;
+    int[] score();
 }
 ```
 #### 常用的元注解

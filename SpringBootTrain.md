@@ -25,10 +25,10 @@ public @interface CherryAnnotation {
 ConfigurationClassParser.doProcessConfigurationClass
 ## 2. 配置文件
 springboot 启动会扫描以下位置的application.properties或者application.yml文件作为Spring boot的默认配置文件
-–file:./config/
-–file:./
-–classpath:/config/
-–classpath:/
+– file:./config/
+– file:./
+– classpath:/config/
+– classpath:/
 [spring外部配置方式](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)
 + 4.命令行参数 --spring.profiles.active=dev; -Dspring.profiles.active=dev
 + 9.Java System properties.

@@ -21,6 +21,8 @@ public @interface CherryAnnotation {
 + @Retention
 + @Documented
 + @Inherited
+
++ @Import 用于依赖第三方包中bean的配置和加载
 ## 2. 配置文件
 [spring外部配置方式](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)
 ## 3. 自动配置原理

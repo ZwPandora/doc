@@ -41,58 +41,58 @@ springboot 启动会扫描以下位置的application.properties或者application
 ## 3. Springboot 启动过程
 实例化
 ```java
-	public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
-		this.resourceLoader = resourceLoader;
-		Assert.notNull(primarySources, "PrimarySources must not be null");
-		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
-		this.webApplicationType = WebApplicationType.deduceFromClasspath();
-		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
-		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
-		this.mainApplicationClass = deduceMainApplicationClass();
-	}
+public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
+	this.resourceLoader = resourceLoader;
+	Assert.notNull(primarySources, "PrimarySources must not be null");
+	this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+	this.webApplicationType = WebApplicationType.deduceFromClasspath();
+	setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
+	setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+	this.mainApplicationClass = deduceMainApplicationClass();
+}
 ```
 run方法
 ```java
 public ConfigurableApplicationContext run(String... args) {
-		StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
-		ConfigurableApplicationContext context = null;
-		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
-		configureHeadlessProperty();
-		SpringApplicationRunListeners listeners = getRunListeners(args);
-		listeners.starting();
-		try {
-			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
-			ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
-			configureIgnoreBeanInfo(environment);
-			Banner printedBanner = printBanner(environment);
-			context = createApplicationContext();
-			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,
-					new Class[] { ConfigurableApplicationContext.class }, context);
-			prepareContext(context, environment, listeners, applicationArguments, printedBanner);
-			refreshContext(context);
-			afterRefresh(context, applicationArguments);
-			stopWatch.stop();
-			if (this.logStartupInfo) {
-				new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);
-			}
-			listeners.started(context);
-			callRunners(context, applicationArguments);
+	StopWatch stopWatch = new StopWatch();
+	stopWatch.start();
+	ConfigurableApplicationContext context = null;
+	Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+	configureHeadlessProperty();
+	SpringApplicationRunListeners listeners = getRunListeners(args);
+	listeners.starting();
+	try {
+		ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+		ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
+		configureIgnoreBeanInfo(environment);
+		Banner printedBanner = printBanner(environment);
+		context = createApplicationContext();
+		exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,
+				new Class[] { ConfigurableApplicationContext.class }, context);
+		prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+		refreshContext(context);
+		afterRefresh(context, applicationArguments);
+		stopWatch.stop();
+		if (this.logStartupInfo) {
+			new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);
 		}
-		catch (Throwable ex) {
-			handleRunFailure(context, ex, exceptionReporters, listeners);
-			throw new IllegalStateException(ex);
-		}
-
-		try {
-			listeners.running(context);
-		}
-		catch (Throwable ex) {
-			handleRunFailure(context, ex, exceptionReporters, null);
-			throw new IllegalStateException(ex);
-		}
-		return context;
+		listeners.started(context);
+		callRunners(context, applicationArguments);
 	}
+	catch (Throwable ex) {
+		handleRunFailure(context, ex, exceptionReporters, listeners);
+		throw new IllegalStateException(ex);
+	}
+
+	try {
+		listeners.running(context);
+	}
+	catch (Throwable ex) {
+		handleRunFailure(context, ex, exceptionReporters, null);
+		throw new IllegalStateException(ex);
+	}
+	return context;
+}
  ```
 ## 4. 自动配置原理
 1. SpringBoot启动的时候加载主配置类，开启了自动配置功能 ==@EnableAutoConfiguration==

@@ -46,7 +46,9 @@ public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySourc
 	Assert.notNull(primarySources, "PrimarySources must not be null");
 	this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
 	this.webApplicationType = WebApplicationType.deduceFromClasspath();
+	//实例化初始器
 	setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
+	//实例化监听器
 	setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 	this.mainApplicationClass = deduceMainApplicationClass();
 }
@@ -59,11 +61,13 @@ public ConfigurableApplicationContext run(String... args) {
 	ConfigurableApplicationContext context = null;
 	Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
 	configureHeadlessProperty();
+	//初始化监听器
 	SpringApplicationRunListeners listeners = getRunListeners(args);
 	listeners.starting();
 	try {
 		ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
 		ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
+		//初始化填充Environment的参数
 		configureIgnoreBeanInfo(environment);
 		Banner printedBanner = printBanner(environment);
 		context = createApplicationContext();
@@ -94,5 +98,67 @@ public ConfigurableApplicationContext run(String... args) {
 	return context;
 }
  ```
+ ```java
+ public void refresh() throws BeansException, IllegalStateException {
+    synchronized (this.startupShutdownMonitor) {
+        //记录启动时间、状态，web容器初始化其property，复制listener
+        prepareRefresh();
+        //这里返回的是context的BeanFactory
+        ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+        //beanFactory注入一些标准组件，例如ApplicationContextAwareProcessor，ClassLoader等
+        prepareBeanFactory(beanFactory);
+        try {
+            //给实现类留的一个钩子，例如注入BeanPostProcessors，这里是个空方法
+            postProcessBeanFactory(beanFactory);
+
+            // 调用切面方法
+            invokeBeanFactoryPostProcessors(beanFactory);
+
+            // 注册切面bean
+            registerBeanPostProcessors(beanFactory);
+
+            // Initialize message source for this context.
+            initMessageSource();
+
+            // bean工厂注册一个key为applicationEventMulticaster的广播器
+            initApplicationEventMulticaster();
+
+            // 给实现类留的一钩子，可以执行其他refresh的工作，这里是个空方法
+            onRefresh();
+
+            // 将listener注册到广播器中
+            registerListeners();
+
+            // 实例化未实例化的bean
+            finishBeanFactoryInitialization(beanFactory);
+
+            // 清理缓存，注入DefaultLifecycleProcessor，发布ContextRefreshedEvent
+            finishRefresh();
+        }
+
+        catch (BeansException ex) {
+            if (logger.isWarnEnabled()) {
+                logger.warn("Exception encountered during context initialization - " +
+                        "cancelling refresh attempt: " + ex);
+            }
+
+            // Destroy already created singletons to avoid dangling resources.
+            destroyBeans();
+
+            // Reset 'active' flag.
+            cancelRefresh(ex);
+
+            // Propagate exception to caller.
+            throw ex;
+        }
+
+        finally {
+            // Reset common introspection caches in Spring's core, since we
+            // might not ever need metadata for singleton beans anymore...
+            resetCommonCaches();
+        }
+    }
+}
+```
 ## 4. 自动配置原理
 1. SpringBoot启动的时候加载主配置类，开启了自动配置功能 ==@EnableAutoConfiguration==

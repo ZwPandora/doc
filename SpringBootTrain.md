@@ -23,9 +23,11 @@ public @interface CherryAnnotation {
 + @Inherited
 + @Import 用于依赖第三方包中bean的配置和加载
 + @SpringBootApplication
-+ @@ComponentScan
-+ @@EnableAutoConfiguration
-+ @Conditional
++ @ComponentScan
++ @EnableAutoConfiguration
++ @Conditional 
+注解解析器
+AnnotatedBeanDefinitionReader.register
 ConfigurationClassParser.doProcessConfigurationClass
 ## 2. 配置文件
 springboot 启动会扫描以下位置的application.properties或者application.yml文件作为Spring boot的默认配置文件

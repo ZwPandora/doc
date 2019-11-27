@@ -22,6 +22,10 @@ public @interface CherryAnnotation {
 + @Documented
 + @Inherited
 + @Import 用于依赖第三方包中bean的配置和加载
++ @SpringBootApplication
++ @@ComponentScan
++ @@EnableAutoConfiguration
++ @Conditional
 ConfigurationClassParser.doProcessConfigurationClass
 ## 2. 配置文件
 springboot 启动会扫描以下位置的application.properties或者application.yml文件作为Spring boot的默认配置文件
@@ -162,3 +166,7 @@ public ConfigurableApplicationContext run(String... args) {
 ```
 ## 4. 自动配置原理
 1. SpringBoot启动的时候加载主配置类，开启了自动配置功能 ==@EnableAutoConfiguration==
+
+总的来说，@EnableAutoConfiguration完成了一下功能：
+从classpath中搜寻所有的 META-INF/spring.factories 配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration 对应的配置项通过反射实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
+
